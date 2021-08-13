@@ -1,0 +1,1 @@
+config berisi koneksi dan lain" mengenai database
