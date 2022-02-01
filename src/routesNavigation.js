@@ -1,1 +1,6 @@
-'routes berisi url yang akan diakses'
+const router = require('express').Router()
+const test = require('./routes/test')
+
+router.use('/', test)
+
+module.exports = router
