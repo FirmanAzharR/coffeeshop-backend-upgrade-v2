@@ -1,0 +1,74 @@
+2022-02-02T07:32:25.023Z - [INFO] - app is running on port 4004
+2022-02-02T07:32:25.061Z - [INFO] - database success connected
+2022-02-02T07:32:33.174Z - [INFO] - url:: /api-test - body:: {"title":"test-api","description":"test","published":true} - status:: 200 - response:: {"id":13,"title":"test-api","description":"test","published":true,"updatedAt":"2022-02-02T07:32:33.162Z","createdAt":"2022-02-02T07:32:33.162Z"}
+2022-02-02T07:47:38.245Z - [INFO] - app is running on port 4004
+2022-02-02T07:47:38.340Z - [INFO] - database success connected
+2022-02-02T07:48:06.716Z - [INFO] - app is running on port 4004
+2022-02-02T07:48:06.744Z - [INFO] - database success connected
+2022-02-02T07:48:28.453Z - [INFO] - app is running on port 4004
+2022-02-02T07:48:28.482Z - [INFO] - database success connected
+2022-02-02T07:48:46.581Z - [INFO] - app is running on port 4004
+2022-02-02T07:48:46.610Z - [INFO] - database success connected
+2022-02-02T07:49:11.261Z - [INFO] - app is running on port 4004
+2022-02-02T07:49:11.292Z - [INFO] - database success connected
+2022-02-02T07:51:23.472Z - [INFO] - app is running on port 4004
+2022-02-02T07:51:23.507Z - [INFO] - database success connected
+2022-02-02T07:51:28.218Z - [INFO] - url:: /api-test - body:: {"title":"test-api","description":"","published":true} - status:: 200 - response:: {"id":14,"title":"test-api","description":"","published":true,"updatedAt":"2022-02-02T07:51:28.202Z","createdAt":"2022-02-02T07:51:28.202Z"}
+2022-02-02T07:52:19.611Z - [INFO] - app is running on port 4004
+2022-02-02T07:52:19.646Z - [INFO] - database success connected
+2022-02-02T07:52:42.152Z - [INFO] - app is running on port 4004
+2022-02-02T07:52:42.175Z - [INFO] - database success connected
+2022-02-02T07:53:12.587Z - [INFO] - app is running on port 4004
+2022-02-02T07:53:12.615Z - [INFO] - database success connected
+2022-02-02T07:53:30.373Z - [INFO] - url:: /api-test - body:: {"title":"test-api","description":"v1","published":true} - status:: 200 - response:: {"id":15,"title":"test-api","description":"v1","published":true,"updatedAt":"2022-02-02T07:53:30.358Z","createdAt":"2022-02-02T07:53:30.358Z"}
+2022-02-02T07:54:57.507Z - [INFO] - app is running on port 4004
+2022-02-02T07:54:57.536Z - [INFO] - database success connected
+2022-02-02T07:56:07.476Z - [INFO] - app is running on port 4004
+2022-02-02T07:56:07.502Z - [INFO] - database success connected
+2022-02-02T07:56:25.789Z - [INFO] - app is running on port 4004
+2022-02-02T07:56:25.823Z - [INFO] - database success connected
+2022-02-02T07:57:34.567Z - [INFO] - app is running on port 4004
+2022-02-02T07:57:34.594Z - [INFO] - database success connected
+2022-02-02T08:00:11.723Z - [INFO] - app is running on port 4004
+2022-02-02T08:00:11.753Z - [INFO] - database success connected
+2022-02-02T08:20:43.364Z - [INFO] - url:: /api-test - body:: {"title":"test-api","description":"v1","published":true} - status:: 200 - response:: {"id":16,"title":"test-api","description":"v1","published":true,"updatedAt":"2022-02-02T08:20:43.348Z","createdAt":"2022-02-02T08:20:43.348Z"}
+2022-02-02T09:32:56.543Z - [INFO] - app is running on port 4004
+2022-02-02T09:32:56.578Z - [INFO] - database success connected
+2022-02-02T09:33:09.242Z - [INFO] - app is running on port 4004
+2022-02-02T09:33:09.267Z - [INFO] - database success connected
+2022-02-02T09:34:02.296Z - [INFO] - app is running on port 4004
+2022-02-02T09:34:02.324Z - [INFO] - database success connected
+2022-02-02T09:35:05.996Z - [INFO] - app is running on port 4004
+2022-02-02T09:35:06.022Z - [INFO] - database success connected
+2022-02-02T09:36:06.646Z - [INFO] - app is running on port 4004
+2022-02-02T09:36:06.673Z - [INFO] - database success connected
+2022-02-02T09:36:34.954Z - [INFO] - app is running on port 4004
+2022-02-02T09:36:34.987Z - [INFO] - database success connected
+2022-02-02T09:42:18.096Z - [INFO] - app is running on port 4004
+2022-02-02T09:42:18.120Z - [INFO] - database success connected
+2022-02-02T09:46:02.811Z - [INFO] - app is running on port 4004
+2022-02-02T09:46:02.836Z - [INFO] - database success connected
+2022-02-02T09:54:43.105Z - [INFO] - app is running on port 4004
+2022-02-02T09:54:43.136Z - [INFO] - database success connected
+2022-02-02T09:59:05.959Z - [INFO] - app is running on port 4004
+2022-02-02T09:59:05.983Z - [INFO] - database success connected
+2022-02-02T09:59:29.619Z - [INFO] - app is running on port 4004
+2022-02-02T09:59:29.648Z - [INFO] - database success connected
+2022-02-02T10:10:02.865Z - [INFO] - app is running on port 4004
+2022-02-02T10:10:02.893Z - [INFO] - database success connected
+2022-02-02T10:10:19.634Z - [INFO] - app is running on port 4004
+2022-02-02T10:10:19.660Z - [INFO] - database success connected
+2022-02-02T10:15:26.490Z - [INFO] - app is running on port 4004
+2022-02-02T10:15:26.519Z - [INFO] - database success connected
+2022-02-02T10:21:18.823Z - [INFO] - app is running on port 4004
+2022-02-02T10:21:18.853Z - [INFO] - database success connected
+2022-02-02T10:30:35.027Z - [INFO] - app is running on port 4004
+2022-02-02T10:30:35.054Z - [INFO] - database success connected
+2022-02-02T10:30:44.667Z - [INFO] - app is running on port 4004
+2022-02-02T10:30:44.695Z - [INFO] - database success connected
+2022-02-02T10:45:40.027Z - [INFO] - app is running on port 4004
+2022-02-02T10:45:40.052Z - [INFO] - database success connected
+2022-02-02T10:53:32.377Z - [INFO] - app is running on port 4004
+2022-02-02T10:53:32.407Z - [INFO] - database success connected
+2022-02-02T10:56:47.369Z - [INFO] - app is running on port 4004
+2022-02-02T10:56:47.396Z - [INFO] - database success connected

@@ -1,6 +1,9 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const cors = require('cors')
+const logger = require('./src/helper/logger')
+const db = require("./src/models");
+
 require('dotenv').config()
 
 const routesNavigation = require('./src/routesNavigation')
@@ -8,6 +11,14 @@ const routesNavigation = require('./src/routesNavigation')
 const app = express()
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
+
+
+db.sequelize.sync({ alter: true });
+// // drop the table if it already exists
+// db.sequelize.sync({ force: true }).then(() => {
+//   console.log("Drop and re-sync db.");
+// });
+
 app.use(cors())
 app.use((request, response, next) => {
   response.header('Access-Control-Allow-Origin', '*')
@@ -29,5 +40,5 @@ app.get('*', (req, res) => {
 const port = process.env.PORT
 
 app.listen(port, () => {
-  console.log(`server is listening on port ${port}`)
+  logger.info(`app is running on port ${port}`)
 })

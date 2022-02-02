@@ -1,6 +1,7 @@
 const router = require('express').Router()
 module.exports = router
 
-const { testApi } = require('../controller/test')
+const { testApi, getTest } = require('../controllers/test')
 
-router.get('/api-test', testApi)
+router.post('/api-test', testApi)
+router.get('/get-test', getTest)
