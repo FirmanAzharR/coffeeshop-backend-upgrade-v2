@@ -18,7 +18,7 @@ const dbConfig = require('../config/config')
 //==========================END LOCAL CONNECTIOM====================================//
 
 const sequelize = new Sequelize(
-    'postgres://apmiutvjayhflf:79acee2e6ce09163e01b09cc8dce1454f5151cd228f2a883ba2c484bbe7a4d4c@ec2-35-153-35-94.compute-1.amazonaws.com:5432/ddl8qtpvr02hja',
+    'postgres://ipjhrdpibjjoox:ccd569bb5a189942de1f43b17e94b5401d74c82df031ac6a7db3eb57d9d14a58@ec2-34-233-157-189.compute-1.amazonaws.com:5432/ddro6b234k5m5e',
     {
         logging: false,
         pool: {
