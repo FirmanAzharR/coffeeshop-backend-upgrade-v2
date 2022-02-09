@@ -12,13 +12,18 @@ const app = express()
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
-db.sequelize
-    .sync({ alter: true })
-    .then(() => {
-        logger.info('check and update table when model are updated [done]')
-        logger.log('running app successfully')
-    })
-    .catch((e) => logger.log('failed sync database', e))
+db.sequelize.sync({ alter: true })
+// .then(() => {
+//     logger.info('check and update table when model are updated')
+// })
+// .then(() => {
+//     logger.info('proses sync db done')
+//     logger.info('running app successfully')
+// })
+// .catch((e) => {
+//     logger.info('failed sync database', e)
+// })
+
 // drop the table if it already exists
 // db.sequelize.sync({ force: true }).then(() => {
 //     console.log('Drop and re-sync db.')
