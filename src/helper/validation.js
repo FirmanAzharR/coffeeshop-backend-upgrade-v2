@@ -6,6 +6,13 @@ const testSchema = Joi.object({
     published: Joi.boolean().required(),
 })
 
+const authSchema = Joi.object({
+    number: Joi.string().required(),
+    email: Joi.string().required(),
+    password: Joi.string().required(),
+})
+
 module.exports = {
     testSchema,
+    authSchema,
 }

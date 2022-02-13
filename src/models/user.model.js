@@ -2,6 +2,9 @@ module.exports = (sequelize, Sequelize) => {
     const User = sequelize.define(
         'user',
         {
+            number: {
+                type: Sequelize.STRING,
+            },
             email: {
                 type: Sequelize.STRING,
             },
@@ -10,6 +13,9 @@ module.exports = (sequelize, Sequelize) => {
             },
             key: {
                 type: Sequelize.STRING,
+            },
+            active_status: {
+                type: Sequelize.BOOLEAN,
             },
         },
         {
