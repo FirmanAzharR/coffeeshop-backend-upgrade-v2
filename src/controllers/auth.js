@@ -9,9 +9,9 @@ const { Client } = require('whatsapp-web.js')
 const qrcode = require('qrcode-terminal')
 const randomstring = require('randomstring')
 const fs = require('fs')
-const userModel = require('../models/user.model')
+const { query } = require('../helper/logger')
 
-const sendOtp = (number, id, otp) => {
+const sendOtp = (number, key) => {
     try {
         let SESSION = './src/config/session.json'
         let sessionData
@@ -56,7 +56,7 @@ const sendOtp = (number, id, otp) => {
 
         client.on('ready', async () => {
             //const message = `https://test-link-activation/id=${id}/key=${otp}`
-            const message = `active your account click this link : https://bit.ly/arkademycv`
+            const message = `active your account click this link : https://bit.ly/arkademycv/key`
             const chatId = `${number}@c.us`
             await client
                 .sendMessage(chatId, message)
@@ -95,7 +95,7 @@ module.exports = {
                 const data = { number, email, password: hashPassword, key: key }
                 let result = await modelUser.create(data)
                 //send otp
-                sendOtp(number, result.id, key)
+                sendOtp(number, key)
                 result = {
                     id: result.id,
                     phone: result.number,
@@ -115,7 +115,26 @@ module.exports = {
             return helper.response(res, status, message, null)
         }
     },
-
+    activationUser: async (req, res) => {
+        try {
+            const { id, key } = req.query
+            const user = await modelUser.findOne({
+                where: { id: id, key: key, active_status: null },
+            })
+            if (user) {
+                await modelUser.update(
+                    { active_status: true },
+                    { where: { id: id } }
+                )
+                return helper.response(res, 200, 'Activation success', null)
+            } else {
+                return helper.response(res, 400, 'User not found', null)
+            }
+        } catch (e) {
+            console.log(e)
+            return helper.response(res, 400, 'Bad Request', null)
+        }
+    },
     loginUser: async () => {},
 
     forgotPassword: async () => {},
