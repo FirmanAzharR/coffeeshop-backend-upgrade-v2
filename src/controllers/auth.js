@@ -9,9 +9,8 @@ const { Client } = require('whatsapp-web.js')
 const qrcode = require('qrcode-terminal')
 const randomstring = require('randomstring')
 const fs = require('fs')
-const { query } = require('../helper/logger')
 
-const sendOtp = (number, key) => {
+const sendOtp = (number, id, key) => {
     try {
         let SESSION = './src/config/session.json'
         let sessionData
@@ -55,8 +54,8 @@ const sendOtp = (number, key) => {
         })
 
         client.on('ready', async () => {
-            //const message = `https://test-link-activation/id=${id}/key=${otp}`
-            const message = `active your account click this link : https://bit.ly/arkademycv/key`
+            const message = `https://test-link-activation/id=${id}/key=${key}`
+            //const message = `active your account click this link : https://bit.ly/arkademycv/key`
             const chatId = `${number}@c.us`
             await client
                 .sendMessage(chatId, message)
@@ -95,7 +94,7 @@ module.exports = {
                 const data = { number, email, password: hashPassword, key: key }
                 let result = await modelUser.create(data)
                 //send otp
-                sendOtp(number, key)
+                sendOtp(number, result.id, key)
                 result = {
                     id: result.id,
                     phone: result.number,
