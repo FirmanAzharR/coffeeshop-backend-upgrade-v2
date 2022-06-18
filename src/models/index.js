@@ -4,16 +4,16 @@ const logger = require('../helper/logger')
 //===================== LOCAL CONNECTION ==========================================//
 const dbConfig = require('../config/config')
 const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
-host: dbConfig.HOST,
-dialect: dbConfig.dialect,
-logging: false,
-//operatorsAliases: false,
-pool: {
-    max: dbConfig.pool.max,
-    min: dbConfig.pool.min,
-    acquire: dbConfig.pool.acquire,
-    idle: dbConfig.pool.idle,
-},
+    host: dbConfig.HOST,
+    dialect: dbConfig.dialect,
+    logging: false,
+    //operatorsAliases: false,
+    pool: {
+        max: dbConfig.pool.max,
+        min: dbConfig.pool.min,
+        acquire: dbConfig.pool.acquire,
+        idle: dbConfig.pool.idle,
+    },
 })
 //=======================================END LOCAL CONNECTION====================================//
 
