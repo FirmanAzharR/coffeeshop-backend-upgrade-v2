@@ -8,7 +8,7 @@ const { Client } = require('whatsapp-web.js')
 const qrcode = require('qrcode-terminal')
 const randomstring = require('randomstring')
 const fs = require('fs')
-const Op = db.Sequelize.Op
+const jwt = require('jsonwebtoken')
 const modelUser = db.user
 
 const sendOtpWa = (number, id, key) => {
@@ -272,7 +272,7 @@ const sendOtpEmail = (response, email, key) => {
                                 <table border='0' cellpadding='0' cellspacing='0' role='presentation' style='border-collapse:separate;line-height:100%;width:210px;'>
                                   <tr>
                                     <td align='center' bgcolor='#feae39' role='presentation' style='background-color:#feae39;border:none;border-radius:3px;cursor:auto;height:25px;padding:10px 25px;' valign='middle'>
-                                      <a href='#' style='background:#feae39;color:#ffffff;font-family:Open Sans, Arial, sans-serif;font-size:17px;font-weight:bold;line-height:120%;margin:0;text-decoration:none;text-transform:uppercase;' target='_blank'>
+                                      <a href='#' style='background:#feae39;color:#ffffff;font-family:Open Sans, Arial, sans-serif;font-size:17px;font-weight:bold;line-height:120%;margin:0;text-decoration:none;' target='_blank'>
                                         ${key}
                                       </a>
                                     </td>
@@ -454,9 +454,10 @@ const checkEmail2 = (email) => {
 
 module.exports = {
     //FIXME: validation pasword harus mengandung hurufbesar kecil dan simbol
+    //FIXME: add role on login, register, role: admin, user
     registerUser: async (req, res) => {
         try {
-            const { number, email, password } = req.body
+            const { number, email, role, password } = req.body
             await authSchema.validateAsync(req.body)
             const emailUsed = await checkEmail(email)
             if (emailUsed) {
@@ -469,6 +470,7 @@ module.exports = {
                     number,
                     email,
                     password: hashPassword,
+                    role,
                     key: key,
                     active_status: false,
                 }
@@ -493,7 +495,7 @@ module.exports = {
                     phone: result.number,
                     email: result.email,
                 }
-                //logs(req.url, req.body, res.statusCode, data)
+                logs('success register',req.url, req.body, res.statusCode, data)
                 return helper.response(
                     res,
                     200,
@@ -502,7 +504,7 @@ module.exports = {
                 )
             }
         } catch (e) {
-            console.log(e)
+          logs('failed register',req.url, req.body, res.statusCode, data)
             let message = 'Bad Request'
             let status = 400
             if (e.isJoi === true) {
@@ -523,6 +525,7 @@ module.exports = {
                     { active_status: true },
                     { where: { id: id } }
                 )
+                logs('success register',req.url, req.body, res.statusCode, {})
                 return helper.response(res, 200, 'Activation success', null)
             } else {
                 return helper.response(res, 400, 'User not found', null)
@@ -532,9 +535,25 @@ module.exports = {
             return helper.response(res, 400, 'Bad Request', null)
         }
     },
-    loginUser: async () => {
-        //TODO: login dengan username password
-        //TODO: login dengan facebook dan google
+    loginUser: async (req, res) => {
+      const {email,password} =req.body
+      const user = await db.user.findOne({where: {email:email, active_status: true, deletedAt:null}})
+      if(user){
+        const checkPass = bcrypt.compareSync(password, user.password)
+        if(checkPass){
+          const payload = {id : user.id, email: user.email, role: user.role, status: user.active_status}
+          token = jwt.sign(payload, 'intansyg', {expiresIn: '12h'})
+          const result = { ...payload, token }
+          logs(`${user.email} success login`,req.url, req.body, res.statusCode, result)
+          return helper.response(res, 200, 'success login', result)
+        }else{
+          logs(`${user.email} wrong password`,req.url, req.body, res.statusCode, {})
+          return helper.response(res, 400, 'wrong password', null)
+        }
+      }else{
+        logs(`login user not found`,req.url, req.body, res.statusCode, {})
+        return helper.response(res, 400, 'email not found', null)
+      }
     },
     logoutUser: async () => {},
     forgotPassword: async () => {},

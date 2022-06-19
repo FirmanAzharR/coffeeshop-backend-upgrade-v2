@@ -9,6 +9,7 @@ const testSchema = Joi.object({
 const authSchema = Joi.object({
     number: Joi.string().required(),
     email: Joi.string().required(),
+    role: Joi.number().required(),
     password: Joi.string().required(),
 })
 

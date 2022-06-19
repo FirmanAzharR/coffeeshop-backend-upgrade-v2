@@ -1,16 +1,12 @@
-2022-02-18T00:26:23.422Z - [INFO] - app is running on port 8080
-2022-02-18T00:26:24.232Z - [INFO] - database success connected
-2022-02-18T00:54:18.916Z - [INFO] - app is running on port 8080
-2022-02-18T00:54:19.758Z - [INFO] - database success connected
-2022-02-18T01:01:52.377Z - [INFO] - app is running on port 8080
-2022-02-18T01:01:53.352Z - [INFO] - database success connected
-2022-02-18T01:02:46.093Z - [INFO] - app is running on port 8080
-2022-02-18T01:02:46.932Z - [INFO] - database success connected
-2022-02-18T01:04:18.328Z - [INFO] - app is running on port 8080
-2022-02-18T01:04:19.308Z - [INFO] - database success connected
-2022-02-18T01:06:07.399Z - [INFO] - app is running on port 8080
-2022-02-18T01:06:08.336Z - [INFO] - database success connected
-2022-02-18T01:06:26.413Z - [INFO] - app is running on port 8080
-2022-02-18T01:06:27.234Z - [INFO] - database success connected
-2022-02-18T01:07:41.699Z - [INFO] - app is running on port 8080
-2022-02-18T01:07:42.620Z - [INFO] - database success connected
+2022-06-19T06:00:38.144Z - [INFO] - app is running on port 8080
+2022-06-19T06:00:38.373Z - [INFO] - database success connected
+2022-06-19T06:02:11.784Z - [INFO] - app is running on port 8080
+2022-06-19T06:02:11.992Z - [INFO] - database success connected
+2022-06-19T06:10:33.425Z - [INFO] - app is running on port 8080
+2022-06-19T06:10:33.625Z - [INFO] - database success connected
+2022-06-19T06:14:03.039Z - [INFO] - app is running on port 8080
+2022-06-19T06:14:03.303Z - [INFO] - database success connected
+2022-06-19T06:14:58.615Z - [INFO] - message ::success register - url:: /user-register - body:: {"number":"6283122494953","email":"admin@gmail.com","role":"1","password":"admin"} - status:: 200 - response:: {"number":"6283122494953","email":"admin@gmail.com","password":"$2b$10$.EZYlo6AocGvFtCIfgX6YuD7GStbd6PWxYpcKnC3zcpuG4Go57IMG","role":"1","key":"YsA3MXV","active_status":false}
+2022-06-19T06:16:03.911Z - [INFO] - app is running on port 8080
+2022-06-19T06:16:04.209Z - [INFO] - database success connected
+2022-06-19T06:17:37.501Z - [INFO] - message ::admin@gmail.com success login - url:: /user-login - body:: {"email":"admin@gmail.com","password":"admin"} - status:: 200 - response:: {"id":7,"email":"admin@gmail.com","role":1,"status":true,"token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NywiZW1haWwiOiJhZG1pbkBnbWFpbC5jb20iLCJyb2xlIjoxLCJzdGF0dXMiOnRydWUsImlhdCI6MTY1NTYxOTQ1NywiZXhwIjoxNjU1NjYyNjU3fQ.Nrmjx9eUE2eRvP6orA3MxVkChNuADGEV-FOpO8QZRjU"}

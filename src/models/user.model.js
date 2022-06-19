@@ -14,6 +14,9 @@ module.exports = (sequelize, Sequelize) => {
             key: {
                 type: Sequelize.STRING,
             },
+            role: {
+                type: Sequelize.INTEGER,
+            },
             active_status: {
                 type: Sequelize.BOOLEAN,
             },
