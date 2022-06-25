@@ -51,5 +51,6 @@ db.sequelize = sequelize
 
 db.test = require('./test.model')(sequelize, Sequelize)
 db.user = require('./user.model')(sequelize, Sequelize)
+db.product = require('./product.model')(sequelize, Sequelize)
 
 module.exports = db
