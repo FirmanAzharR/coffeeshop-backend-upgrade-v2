@@ -10,8 +10,7 @@ const fsPromises = require('fs').promises
 const modelProduct = db.product
 
 module.exports = {
-    getProduct: async () => { },
-    selectProduct: async () => {},
+    getProduct: async () => {},
     addProduct: async (req, res, next) => {
         try {
             const raw = req.body
