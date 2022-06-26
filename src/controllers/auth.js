@@ -504,7 +504,7 @@ module.exports = {
                 )
             }
         } catch (e) {
-          logs('failed register',req.url, req.body, res.statusCode, data)
+          logs('failed register',req.url, req.body, res.statusCode, {})
             let message = 'Bad Request'
             let status = 400
             if (e.isJoi === true) {
