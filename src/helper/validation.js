@@ -18,11 +18,27 @@ const producthSchema = Joi.object({
     product_name: Joi.string().required(),
     image: Joi.any(),
     description: Joi.string().required(),
-    active_status: Joi.number().required()
+    price: Joi.number().required(),
+    discount: Joi.number().required(),
+    active_status: Joi.number().required(),
+})
+
+const selectProducthSchema = Joi.object({
+    product_id: Joi.number().required(),
+})
+
+const getProducts = Joi.object({
+    product_name: Joi.string().allow(''),
+    category_id: Joi.number().required(),
+    offset: Joi.number().required(),
+    limit: Joi.number().required(),
+    sort: Joi.string(),
 })
 
 module.exports = {
     testSchema,
     authSchema,
-    producthSchema
+    producthSchema,
+    selectProducthSchema,
+    getProducts,
 }

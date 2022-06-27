@@ -14,6 +14,12 @@ module.exports = (sequelize, Sequelize) => {
             description: {
                 type: Sequelize.STRING,
             },
+            price: {
+                type: Sequelize.INTEGER,
+            },
+            discount: {
+                type: Sequelize.INTEGER,
+            },
             active_status: {
                 type: Sequelize.BOOLEAN,
             },
