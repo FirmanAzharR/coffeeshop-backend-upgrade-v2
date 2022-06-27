@@ -3,10 +3,14 @@ module.exports = router
 
 const {
     addProduct,
-    selectProduct,
+    viewProduct,
     getProduct,
+    updateProduct,
+    deleteProduct,
 } = require('../controllers/product')
 
 router.post('/product-add', addProduct)
-router.post('/product-select', selectProduct)
+router.post('/product-view', viewProduct)
 router.post('/product-get-page', getProduct)
+router.patch('/product-update', updateProduct)
+router.delete('/product-delete', deleteProduct)

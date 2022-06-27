@@ -13,38 +13,20 @@ const fs = require('fs')
 const fsPromises = require('fs').promises
 const modelProduct = db.product
 
+//TODO:MENAMBAHKAN LOG DISETIAP KONTROLLER
 module.exports = {
-    selectProduct: async (req, res, next) => {
-        try {
-            const { product_id } = req.body
-            await selectProducthSchema.validateAsync(req.body)
-            let result = await modelProduct.findByPk(product_id, {
-                attributes: {
-                    exclude: ['createdAt', 'deletedAt', 'updatedAt'],
-                },
-            })
-            return helper.response(res, 200, 'success select product', result)
-        } catch (e) {
-            console.log(e)
-            let message = 'Bad Request'
-            let status = 400
-            if (e.isJoi === true) {
-                message = e.details[0].message
-                status = 422
-            }
-            logs(`failed select product`, req.url, req.body, res.statusCode, {})
-            helper.response(res, status, message, {})
-            return next(new CustomError(message, 500))
-        }
-    },
     getProduct: async (req, res, next) => {
         try {
-            const { product_name, category_id, sortCost } = req.body
+            const { product_name, category_id, sortCost, sortDiscount } =
+                req.body
             let { offset, limit } = req.body
             await getProducts.validateAsync(req.body)
             product_name != '' ? (offset = 0) : offset
             category_id ? (offset = 0) : page
             let result = await modelProduct.findAndCountAll({
+                attributes: {
+                    exclude: ['createdAt', 'deletedAt', 'updatedAt'],
+                },
                 where: {
                     [Op.and]: [
                         {
@@ -57,9 +39,7 @@ module.exports = {
                         },
                     ],
                 },
-                // order: [
-                //     ['id', 'DESC']
-                // ],
+                order: [['id', 'DESC']],
                 offset: offset,
                 limit: limit,
             })
@@ -151,7 +131,73 @@ module.exports = {
             return next(new CustomError(message, 500))
         }
     },
-    updateProduct: async () => {},
-    deleteProduct: async () => {},
-    detailProduct: async () => {},
+    updateProduct: async (req, res, next) => {
+        try {
+            const { product_id } = req.body
+
+            let check = await modelProduct.findOne({
+                where: { id: product_id },
+            })
+
+            if (check) {
+            } else {
+                return helper.response(res, 400, 'product not found', {})
+            }
+        } catch (e) {
+            console.log(e)
+        }
+    },
+    viewProduct: async (req, res, next) => {
+        try {
+            const { product_id } = req.body
+            await selectProducthSchema.validateAsync(req.body)
+            let result = await modelProduct.findByPk(product_id, {
+                attributes: {
+                    exclude: ['createdAt', 'deletedAt', 'updatedAt'],
+                },
+            })
+            return helper.response(res, 200, 'success select product', result)
+        } catch (e) {
+            console.log(e)
+            let message = 'Bad Request'
+            let status = 400
+            if (e.isJoi === true) {
+                message = e.details[0].message
+                status = 422
+            }
+            logs(`failed select product`, req.url, req.body, res.statusCode, {})
+            helper.response(res, status, message, {})
+            return next(new CustomError(message, 500))
+        }
+    },
+    deleteProduct: async (req, res, next) => {
+        try {
+            const { product_id } = req.body
+            await selectProducthSchema.validateAsync(req.body)
+
+            let check = await modelProduct.findOne({
+                where: { id: product_id },
+            })
+
+            if (check) {
+                await modelProduct.destroy({
+                    where: { id: product_id },
+                })
+            } else {
+                return helper.response(res, 400, 'product not found', {})
+            }
+
+            return helper.response(res, 200, 'delete product success', {})
+        } catch (e) {
+            console.log(e)
+            let message = 'Bad Request'
+            let status = 400
+            if (e.isJoi === true) {
+                message = e.details[0].message
+                status = 422
+            }
+            helper.response(res, status, message, {})
+            return next(new CustomError(message, status))
+        }
+    },
 }
