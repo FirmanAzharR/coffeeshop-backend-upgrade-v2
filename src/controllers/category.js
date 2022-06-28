@@ -18,7 +18,7 @@ module.exports = {
         } catch (e) {
             logs(e, req.url, req.body, res.statusCode, {})
             helper.response(res, 400, e, {})
-            return new CustomError('Error', 400)
+            return next(new CustomError(message, 500))
         }
     },
 }
