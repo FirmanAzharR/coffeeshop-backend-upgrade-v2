@@ -9,20 +9,21 @@ require('dotenv').config()
 const routesNavigation = require('./src/routesNavigation')
 
 const app = express()
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({ extended: true }))
+app.use(bodyParser.json({ limit: '10mb', extended: true }))
+app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }))
 
-db.sequelize.sync({ alter: true })
-// .then(() => {
-//     logger.info('check and update table when model are updated')
-// })
-// .then(() => {
-//     logger.info('proses sync db done')
-//     logger.info('running app successfully')
-// })
-// .catch((e) => {
-//     logger.info('failed sync database', e)
-// })
+db.sequelize
+    .sync({ alter: true })
+    .then(() => {
+        logger.info('check and update table when model are updated')
+    })
+    .then(() => {
+        logger.info('proses sync db done')
+        logger.info('running app successfully')
+    })
+    .catch((e) => {
+        logger.info('failed sync database', e)
+    })
 
 // drop the table if it already exists
 // db.sequelize.sync({ force: true }).then(() => {
