@@ -26,6 +26,9 @@ const producthSchema = Joi.object({
 const selectProducthSchema = Joi.object({
     product_id: Joi.number().required(),
 })
+const idSchema = Joi.object({
+    id: Joi.number().required(),
+})
 
 const getProducts = Joi.object({
     product_name: Joi.string().allow(''),
@@ -50,4 +53,5 @@ module.exports = {
     selectProducthSchema,
     getProducts,
     addProfile,
+    idSchema,
 }
