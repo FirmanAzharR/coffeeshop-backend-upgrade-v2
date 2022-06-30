@@ -38,7 +38,7 @@ const getProducts = Joi.object({
     sort: Joi.string(),
 })
 
-const addProfile = Joi.object({
+const updateProfiles = Joi.object({
     user_id: Joi.number().required(),
     fullname: Joi.string().required(),
     phone_number: Joi.string().required(),
@@ -52,6 +52,6 @@ module.exports = {
     producthSchema,
     selectProducthSchema,
     getProducts,
-    addProfile,
+    updateProfiles,
     idSchema,
 }

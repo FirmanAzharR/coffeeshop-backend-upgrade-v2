@@ -1,6 +1,6 @@
 const helper = require('../helper/helper')
 const { logs } = require('../helper/loggerMessage')
-const { addProfile, idSchema } = require('../helper/validation')
+const { updateProfiles, idSchema } = require('../helper/validation')
 const { CustomError } = require('../middleware/errorHandler')
 const moment = require('moment')
 const db = require('../models')
@@ -14,36 +14,53 @@ const directory = {
 }
 
 module.exports = {
-    addProfile: async (req, res, next) => {
+    updateProfile: async (req, res, next) => {
         try {
             const raw = req.body
+            let msg = ''
+            let data = {}
+            let results = {}
+            let fileName = ''
 
-            await addProfile.validateAsync(req.body)
+            await updateProfiles.validateAsync(req.body)
 
-            const CurrentDate = moment().format('DD-MM-YY-hh;mm;ss')
-            const fileName = `img-${CurrentDate}.txt`
+            let check = await profileModel.findOne({
+                where: { user_id: raw.user_id },
+            })
 
-            const data = {
-                user_id: raw.user_id,
-                fullname: raw.fullname,
-                phone_number: raw.phone_number,
-                address: raw.address,
-                image: fileName,
-            }
+            if (check) {
+                const CurrentDate = moment().format('DD-MM-YY-hh;mm;ss')
+                check.image
+                    ? (fileName = check.image)
+                    : (fileName = `img-${CurrentDate}.txt`)
 
-            let result = await profileModel.create(data)
-            let msg = 'success add profile'
-            if (result) {
-                if (raw.image) {
-                    fs.writeFileSync(`${directory.local}${fileName}`, raw.image)
+                data = {
+                    fullname: raw.fullname,
+                    phone_number: raw.phone_number,
+                    address: raw.address,
+                    image: fileName,
                 }
+
+                let result = await profileModel.update(data, {
+                    where: { id: check.id },
+                })
+                if (result) {
+                    if (raw.image) {
+                        fs.writeFileSync(
+                            `${directory.local}${fileName}`,
+                            raw.image
+                        )
+                    }
+                }
+                msg = 'success update profile'
+                results = result
             }
 
             logs(msg, req.url, data, res.statusCode, {})
-            return helper.response(res, 200, msg, result)
+            return helper.response(res, 200, msg, results)
         } catch (e) {
             console.log(e)
-            let message = 'Bad Request'
+            let message = `Bad Request ${e}`
             let status = 400
             if (e.isJoi === true) {
                 message = e.details[0].message
@@ -113,5 +130,31 @@ module.exports = {
             return next(new CustomError(message, 500))
         }
     },
-    updateProfile: async (req, res, next) => {},
+    updateAccount: async (req, res, next) => {
+        try {
+            //TODO::BELUM KELAR SUOG
+            const { id, username, password } = req.body
+
+            let result = await userModel.findByPk(id, {
+                attributes: ['id'],
+            })
+
+            if (result) {
+                await userModel.update()
+            }
+
+            console.log(result)
+        } catch (e) {
+            console.log(e)
+            let message = `Bad Request : ${e}`
+            let status = 400
+            if (e.isJoi === true) {
+                message = e.details[0].message
+                status = 422
+            }
+            logs(message, req.url, {}, res.statusCode, {})
+            helper.response(res, status, message, {})
+            return next(new CustomError(message, 500))
+        }
+    },
 }

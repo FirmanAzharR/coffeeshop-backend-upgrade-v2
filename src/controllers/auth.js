@@ -10,6 +10,7 @@ const randomstring = require('randomstring')
 const fs = require('fs')
 const jwt = require('jsonwebtoken')
 const modelUser = db.user
+const modelProfile = db.profile
 
 const sendOtpWa = (number, id, key) => {
     try {
@@ -495,7 +496,13 @@ module.exports = {
                     phone: result.number,
                     email: result.email,
                 }
-                logs('success register',req.url, req.body, res.statusCode, data)
+                logs(
+                    'success register',
+                    req.url,
+                    req.body,
+                    res.statusCode,
+                    data
+                )
                 return helper.response(
                     res,
                     200,
@@ -504,7 +511,7 @@ module.exports = {
                 )
             }
         } catch (e) {
-          logs('failed register',req.url, req.body, res.statusCode, {})
+            logs('failed register', req.url, req.body, res.statusCode, {})
             let message = 'Bad Request'
             let status = 400
             if (e.isJoi === true) {
@@ -525,7 +532,8 @@ module.exports = {
                     { active_status: true },
                     { where: { id: id } }
                 )
-                logs('success register',req.url, req.body, res.statusCode, {})
+                await modelProfile.create({ user_id: id })
+                logs('success register', req.url, req.body, res.statusCode, {})
                 return helper.response(res, 200, 'Activation success', null)
             } else {
                 return helper.response(res, 400, 'User not found', null)
@@ -536,24 +544,43 @@ module.exports = {
         }
     },
     loginUser: async (req, res) => {
-      const {email,password} =req.body
-      const user = await db.user.findOne({where: {email:email, active_status: true, deletedAt:null}})
-      if(user){
-        const checkPass = bcrypt.compareSync(password, user.password)
-        if(checkPass){
-          const payload = {id : user.id, email: user.email, role: user.role, status: user.active_status}
-          token = jwt.sign(payload, 'intansyg', {expiresIn: '12h'})
-          const result = { ...payload, token }
-          logs(`${user.email} success login`,req.url, req.body, res.statusCode, result)
-          return helper.response(res, 200, 'success login', result)
-        }else{
-          logs(`${user.email} wrong password`,req.url, req.body, res.statusCode, {})
-          return helper.response(res, 400, 'wrong password', null)
+        const { email, password } = req.body
+        const user = await db.user.findOne({
+            where: { email: email, active_status: true, deletedAt: null },
+        })
+        if (user) {
+            const checkPass = bcrypt.compareSync(password, user.password)
+            if (checkPass) {
+                const payload = {
+                    id: user.id,
+                    email: user.email,
+                    role: user.role,
+                    status: user.active_status,
+                }
+                token = jwt.sign(payload, 'intansyg', { expiresIn: '12h' })
+                const result = { ...payload, token }
+                logs(
+                    `${user.email} success login`,
+                    req.url,
+                    req.body,
+                    res.statusCode,
+                    result
+                )
+                return helper.response(res, 200, 'success login', result)
+            } else {
+                logs(
+                    `${user.email} wrong password`,
+                    req.url,
+                    req.body,
+                    res.statusCode,
+                    {}
+                )
+                return helper.response(res, 400, 'wrong password', null)
+            }
+        } else {
+            logs(`login user not found`, req.url, req.body, res.statusCode, {})
+            return helper.response(res, 400, 'email not found', null)
         }
-      }else{
-        logs(`login user not found`,req.url, req.body, res.statusCode, {})
-        return helper.response(res, 400, 'email not found', null)
-      }
     },
     logoutUser: async () => {},
     forgotPassword: async () => {},
