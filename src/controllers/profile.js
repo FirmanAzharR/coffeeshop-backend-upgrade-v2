@@ -3,6 +3,7 @@ const { logs } = require('../helper/loggerMessage')
 const { updateProfiles, idSchema } = require('../helper/validation')
 const { CustomError } = require('../middleware/errorHandler')
 const moment = require('moment')
+const bcrypt = require('bcrypt')
 const db = require('../models')
 const fs = require('fs')
 const profileModel = db.profile
@@ -133,17 +134,26 @@ module.exports = {
     updateAccount: async (req, res, next) => {
         try {
             //TODO::BELUM KELAR SUOG
-            const { id, username, password } = req.body
+            const { id, username, oldPassword, newPassword } = req.body
 
-            let result = await userModel.findByPk(id, {
-                attributes: ['id'],
+            let check = await userModel.findByPk(id, {
+                attributes: ['id', 'password'],
             })
 
-            if (result) {
-                await userModel.update()
+            if (check) {
+                if (bcrypt.compareSync(oldPassword, check.password)) {
+                    const salt = bcrypt.genSaltSync(10)
+                    const hashPassword = bcrypt.hashSync(newPassword, salt)
+                    const data = {
+                        username: username,
+                        password: hashPassword,
+                    }
+                    await userModel.update(data, { where: { id: id } })
+                    return helper.response(res, 200, 'success update account')
+                } else {
+                    return helper.response(res, 400, 'old password not match')
+                }
             }
-
-            console.log(result)
         } catch (e) {
             console.log(e)
             let message = `Bad Request : ${e}`

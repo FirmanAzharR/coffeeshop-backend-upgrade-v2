@@ -9,4 +9,4 @@ const {
 
 router.patch('/profile-update', updateProfile)
 router.get('/profile-view', viewProfile)
-router.patch('/profile-update', updateAccount)
+router.patch('/profile-update-account', updateAccount)
