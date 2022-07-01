@@ -1,6 +1,10 @@
 const helper = require('../helper/helper')
 const { logs } = require('../helper/loggerMessage')
-const { updateProfiles, idSchema } = require('../helper/validation')
+const {
+    updateProfiles,
+    idSchema,
+    updateAccount,
+} = require('../helper/validation')
 const { CustomError } = require('../middleware/errorHandler')
 const moment = require('moment')
 const bcrypt = require('bcrypt')
@@ -135,6 +139,8 @@ module.exports = {
         try {
             //TODO::BELUM KELAR SUOG
             const { id, username, oldPassword, newPassword } = req.body
+
+            await updateAccount.validateAsync(req.body)
 
             let check = await userModel.findByPk(id, {
                 attributes: ['id', 'password'],

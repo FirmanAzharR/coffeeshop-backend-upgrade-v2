@@ -46,6 +46,13 @@ const updateProfiles = Joi.object({
     image: Joi.string(),
 })
 
+const updateAccount = Joi.object({
+    id: Joi.number().required(),
+    email: Joi.string().required(),
+    oldPassword: Joi.string().required(),
+    newPassword: Joi.string().required(),
+})
+
 module.exports = {
     testSchema,
     authSchema,
@@ -54,4 +61,5 @@ module.exports = {
     getProducts,
     updateProfiles,
     idSchema,
+    updateAccount,
 }
