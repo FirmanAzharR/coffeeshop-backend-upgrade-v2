@@ -53,7 +53,40 @@ const updateAccount = Joi.object({
     newPassword: Joi.string().required(),
 })
 
+const cuponAdd = Joi.object({
+    name: Joi.string().required(),
+    description: Joi.string().required(),
+    discount: Joi.number().required(),
+    start_date: Joi.string().required(),
+    end_date: Joi.string().required(),
+    active_status: Joi.number().required(),
+    image: Joi.string().allow(null),
+})
+
+const cuponUpdate = Joi.object({
+    id: Joi.number().required(),
+    name: Joi.string().required(),
+    description: Joi.string().required(),
+    discount: Joi.number().required(),
+    start_date: Joi.string().required(),
+    end_date: Joi.string().required(),
+    active_status: Joi.number().required(),
+    image: Joi.string().allow(null).required(),
+})
+
+const validateId = Joi.object({
+    id: Joi.number().required(),
+})
+
+const pageCupon = Joi.object({
+    name: Joi.string().allow(''),
+    start_date: Joi.date().allow(null),
+    limit: Joi.number().required(),
+    offset: Joi.number().required(),
+})
+
 module.exports = {
+    validateId,
     testSchema,
     authSchema,
     producthSchema,
@@ -62,4 +95,7 @@ module.exports = {
     updateProfiles,
     idSchema,
     updateAccount,
+    cuponAdd,
+    cuponUpdate,
+    pageCupon,
 }

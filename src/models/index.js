@@ -54,5 +54,8 @@ db.user = require('./user.model')(sequelize, Sequelize)
 db.product = require('./product.model')(sequelize, Sequelize)
 db.category = require('./category.model')(sequelize, Sequelize)
 db.profile = require('./profile.model')(sequelize, Sequelize)
+db.order = require('./order.model')(sequelize, Sequelize)
+db.detailorder = require('./detailorder.model')(sequelize, Sequelize)
+db.cupon = require('./cupon.model')(sequelize, Sequelize)
 
 module.exports = db
