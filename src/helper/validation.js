@@ -85,6 +85,18 @@ const pageCupon = Joi.object({
     offset: Joi.number().required(),
 })
 
+const orders = Joi.object({
+    user_id: Joi.number().required(),
+    invoice: Joi.string().required(),
+    cupon_id: Joi.number(),
+    delivery_date: Joi.string().required(),
+    order_date: Joi.string().required(),
+    order_status: Joi.number().required(),
+    subtotal: Joi.number().required(),
+    total: Joi.number().required(),
+    order_detail: Joi.any().required(),
+})
+
 module.exports = {
     validateId,
     testSchema,
@@ -98,4 +110,5 @@ module.exports = {
     cuponAdd,
     cuponUpdate,
     pageCupon,
+    orders,
 }

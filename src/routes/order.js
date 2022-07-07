@@ -10,8 +10,8 @@ const {
 
 route.post('/order-add', postOrder)
 route.post('/order-get-all', getAllOrder)
-route.post('/order-view', viewOrder)
+route.get('/order-view', viewOrder)
 route.delete('/order-delete', deleteOrder)
-route.patch('order-update', updateOrder)
+route.patch('/order-update', updateOrder)
 
 module.exports = route

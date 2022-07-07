@@ -12,7 +12,10 @@ module.exports = (sequelize, Sequelize) => {
                 type: Sequelize.INTEGER,
             },
             order_date: {
-                type: Sequelize.STRING,
+                type: Sequelize.DATE,
+            },
+            delivery_date: {
+                type: Sequelize.DATE,
             },
             order_status: {
                 type: Sequelize.INTEGER,
