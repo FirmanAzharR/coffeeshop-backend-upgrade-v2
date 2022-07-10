@@ -180,7 +180,7 @@ module.exports = {
             })
 
             let totalPage = 0
-            if (name != '' && start_date != '') {
+            if (name && start_date) {
                 totalPage = Math.ceil(result.rows.length / limit)
             } else {
                 totalPage = Math.ceil(result.count / limit)

@@ -7,6 +7,7 @@ const moment = require('moment')
 const db = require('../models')
 const orderModel = db.order
 const detailOrderModel = db.detailorder
+const profileModel = db.profile
 
 const addId = (x, id) => {
     return new Promise((resolve, reject) => {
@@ -101,13 +102,116 @@ module.exports = {
     },
     getAllOrder: async (req, res, next) => {
         try {
-        } catch (e) {}
+            const { invoice, customer_name, customer_phone, user_id } =
+                req.query
+            let { offset, limit } = req.query
+
+            //validateasync
+            //TODO: menambahkan validasi
+
+            //filter
+            let filterOrder = []
+            let filterProfile = []
+
+            if (invoice) {
+                filterOrder.push({
+                    invoice: {
+                        [Op.iLike]: `%${invoice}%`,
+                    },
+                })
+                offset = 0
+            }
+
+            if (user_id) {
+                filterOrder.push({
+                    user_id: user_id,
+                })
+                offset = 0
+            }
+
+            if (customer_name) {
+                filterProfile.push({
+                    fullname: {
+                        [Op.iLike]: `%${customer_name}%`,
+                    },
+                })
+                offset = 0
+            }
+
+            if (customer_phone) {
+                filterProfile.push({
+                    phone_nmuber: {
+                        [Op.iLike]: `%${customer_phone}%`,
+                    },
+                })
+                offset = 0
+            }
+
+            //end filter
+
+            const exclude = ['deletedAt', 'createdAt', 'updatedAt', 'password']
+
+            orderModel.belongsTo(profileModel, {
+                targetKey: 'user_id',
+                foreignKey: 'user_id',
+            })
+
+            let result = await orderModel.findAndCountAll({
+                where: {
+                    [Op.and]: filterOrder,
+                },
+                attributes: {
+                    exclude: exclude,
+                },
+                include: [
+                    {
+                        model: profileModel,
+                        where: {
+                            [Op.and]: filterProfile,
+                        },
+                        attributes: {
+                            exclude: exclude,
+                        },
+                    },
+                ],
+                order: [['id', 'DESC']],
+                offset: offset,
+                limit: limit,
+            })
+
+            let totalPage = 0
+            if (customer_name && customer_phone && invoice) {
+                totalPage = Math.ceil(result.rows.length / limit)
+            } else {
+                totalPage = Math.ceil(result.count / limit)
+            }
+
+            const pagination = {
+                totalData: result.count,
+                totalPage: totalPage,
+            }
+
+            return helper.response(
+                res,
+                200,
+                'success get all order',
+                result,
+                pagination
+            )
+        } catch (e) {
+            console.log(e)
+            let message = `Bad Request, ${e}`
+            let status = 400
+            if (e.isJoi === true) {
+                message = e.details[0].message
+                status = 422
+            }
+            logs(message, req.url, {}, res.statusCode, {})
+            helper.response(res, status, message, {})
+            return next(new CustomError(message, 500))
+        }
     },
     updateOrder: async (req, res, next) => {
-        try {
-        } catch (e) {}
-    },
-    deleteOrder: async (req, res, next) => {
         try {
         } catch (e) {}
     },

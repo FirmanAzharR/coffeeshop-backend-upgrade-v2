@@ -35,7 +35,7 @@ module.exports = {
             let { offset, limit } = req.body
             await getProducts.validateAsync(req.body)
             product_name != '' ? (offset = 0) : offset
-            category_id ? (offset = 0) : page
+            category_id ? (offset = 0) : offset
             let result = await modelProduct.findAndCountAll({
                 attributes: {
                     exclude: ['createdAt', 'deletedAt', 'updatedAt'],
