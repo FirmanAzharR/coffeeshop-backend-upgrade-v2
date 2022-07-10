@@ -26,6 +26,9 @@ const producthSchema = Joi.object({
 const selectProducthSchema = Joi.object({
     product_id: Joi.number().required(),
 })
+const idSchema = Joi.object({
+    id: Joi.number().required(),
+})
 
 const getProducts = Joi.object({
     product_name: Joi.string().allow(''),
@@ -35,10 +38,77 @@ const getProducts = Joi.object({
     sort: Joi.string(),
 })
 
+const updateProfiles = Joi.object({
+    user_id: Joi.number().required(),
+    fullname: Joi.string().required(),
+    phone_number: Joi.string().required(),
+    address: Joi.string().required(),
+    image: Joi.string(),
+})
+
+const updateAccount = Joi.object({
+    id: Joi.number().required(),
+    email: Joi.string().required(),
+    oldPassword: Joi.string().required(),
+    newPassword: Joi.string().required(),
+})
+
+const cuponAdd = Joi.object({
+    name: Joi.string().required(),
+    description: Joi.string().required(),
+    discount: Joi.number().required(),
+    start_date: Joi.string().required(),
+    end_date: Joi.string().required(),
+    active_status: Joi.number().required(),
+    image: Joi.string().allow(null),
+})
+
+const cuponUpdate = Joi.object({
+    id: Joi.number().required(),
+    name: Joi.string().required(),
+    description: Joi.string().required(),
+    discount: Joi.number().required(),
+    start_date: Joi.string().required(),
+    end_date: Joi.string().required(),
+    active_status: Joi.number().required(),
+    image: Joi.string().allow(null).required(),
+})
+
+const validateId = Joi.object({
+    id: Joi.number().required(),
+})
+
+const pageCupon = Joi.object({
+    name: Joi.string().allow(''),
+    start_date: Joi.date().allow(null),
+    limit: Joi.number().required(),
+    offset: Joi.number().required(),
+})
+
+const orders = Joi.object({
+    user_id: Joi.number().required(),
+    invoice: Joi.string().required(),
+    cupon_id: Joi.number(),
+    delivery_date: Joi.string().required(),
+    order_date: Joi.string().required(),
+    order_status: Joi.number().required(),
+    subtotal: Joi.number().required(),
+    total: Joi.number().required(),
+    order_detail: Joi.any().required(),
+})
+
 module.exports = {
+    validateId,
     testSchema,
     authSchema,
     producthSchema,
     selectProducthSchema,
     getProducts,
+    updateProfiles,
+    idSchema,
+    updateAccount,
+    cuponAdd,
+    cuponUpdate,
+    pageCupon,
+    orders,
 }
