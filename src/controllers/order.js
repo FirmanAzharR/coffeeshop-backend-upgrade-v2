@@ -213,6 +213,31 @@ module.exports = {
     },
     updateOrder: async (req, res, next) => {
         try {
-        } catch (e) {}
+            const { id, order_status } = req.body
+
+            //validate
+            //TODO: add validasi
+            const check = await orderModel.findByPk(id)
+            if (check) {
+                const result = await orderModel.update(
+                    { order_status: order_status },
+                    { where: { id: check.id } }
+                )
+                return helper.response(res, 200, 'update order success', result)
+            } else {
+                return helper.response(res, 400, 'order not found', {})
+            }
+        } catch (e) {
+            console.log(e)
+            let message = `Bad Request, ${e}`
+            let status = 400
+            if (e.isJoi === true) {
+                message = e.details[0].message
+                status = 422
+            }
+            logs(message, req.url, {}, res.statusCode, {})
+            helper.response(res, status, message, {})
+            return next(new CustomError(message, 500))
+        }
     },
 }
