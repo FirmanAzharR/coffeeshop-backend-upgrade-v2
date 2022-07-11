@@ -1,2 +1,3 @@
 Mengubah semua pagination menjadi get (req.query) bukan post
 membuat error handling di catch ke dalam helper (catch.js)
+membuat membuat middleware isAdmin untuk pembatasan akses api
