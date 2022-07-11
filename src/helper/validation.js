@@ -85,6 +85,16 @@ const pageCupon = Joi.object({
     offset: Joi.number().required(),
 })
 
+const activationUser = Joi.object({
+    id: Joi.number().required(),
+    key: Joi.string().required(),
+})
+
+const loginValidation = Joi.object({
+    email: Joi.string().required(),
+    password: Joi.string().required(),
+})
+
 const orders = Joi.object({
     user_id: Joi.number().required(),
     invoice: Joi.string().required(),
@@ -97,7 +107,24 @@ const orders = Joi.object({
     order_detail: Joi.any().required(),
 })
 
+const getAllOrders = Joi.object({
+    invoice: Joi.string(),
+    customer_name: Joi.string(),
+    customer_phone: Joi.string(),
+    user_id: Joi.number(),
+    limit: Joi.number().required(),
+    offset: Joi.number().required(),
+})
+
+const updateOrder = Joi.object({
+    id: Joi.number().required(),
+    order_status: Joi.number().required(),
+})
+
 module.exports = {
+    updateOrder,
+    getAllOrders,
+    loginValidation,
     validateId,
     testSchema,
     authSchema,
@@ -111,4 +138,5 @@ module.exports = {
     cuponUpdate,
     pageCupon,
     orders,
+    activationUser,
 }

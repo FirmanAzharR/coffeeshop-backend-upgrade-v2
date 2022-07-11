@@ -1,4 +1,5 @@
 const helper = require('../helper/helper')
+const config = require('../config/config')
 const {
     cuponAdd,
     cuponUpdate,
@@ -11,13 +12,7 @@ const { Op } = require('sequelize')
 const moment = require('moment')
 const db = require('../models')
 const fs = require('fs')
-const { start } = require('repl')
 const modelCupon = db.cupon
-
-const directory = {
-    local: `./src/uploads/cupons/`,
-    server: '',
-}
 
 module.exports = {
     addCupon: async (req, res, next) => {
@@ -40,11 +35,14 @@ module.exports = {
 
             const result = await modelCupon.create(data)
             if (result) {
-                fs.writeFileSync(`${directory.local}${fileName}`, raw.image)
+                fs.writeFileSync(
+                    `${config.directory.local}${fileName}`,
+                    raw.image
+                )
+                logs('success add cupon', req.url, {}, res.statusCode, {})
             }
             return helper.response(res, 200, 'success add cupon', result)
         } catch (e) {
-            console.log(e)
             let message = `Bad Request, ${e}`
             let status = 400
             if (e.isJoi === true) {
@@ -79,8 +77,15 @@ module.exports = {
                 })
                 if (result) {
                     fs.writeFileSync(
-                        `${directory.local}${check.image}`,
+                        `${config.directory.local}${check.image}`,
                         raw.image
+                    )
+                    logs(
+                        'success update cupon',
+                        req.url,
+                        {},
+                        res.statusCode,
+                        {}
                     )
                 }
                 return helper.response(res, 200, 'success update cupon', result)
@@ -88,7 +93,6 @@ module.exports = {
                 return helper.response(res, 400, 'data cupon not found', {})
             }
         } catch (e) {
-            console.log(e)
             let message = `Bad Request, ${e}`
             let status = 400
             if (e.isJoi === true) {
@@ -111,12 +115,13 @@ module.exports = {
                 if (result) {
                     fs.unlinkSync(`${directory.local}${check.image}`)
                 }
+                logs('success delete cupon', req.url, {}, res.statusCode, {})
                 return helper.response(res, 200, 'success delete cupon', result)
             } else {
+                logs('cupon not found', req.url, {}, res.statusCode, {})
                 return helper.response(res, 400, 'data cupon not found', {})
             }
         } catch (e) {
-            console.log(e)
             let message = `Bad Request, ${e}`
             let status = 400
             if (e.isJoi === true) {
@@ -132,16 +137,32 @@ module.exports = {
         try {
             const { id } = req.body
             const result = await modelCupon.findByPk(id)
+
+            await validateId.validateAsync(req.body)
+
             if (result) {
                 const fileImage = fs.readFileSync(
-                    `${directory.local}${result.image}`,
+                    `${config.directory.local}${result.image}`,
                     { encoding: 'utf8', flag: 'r' }
                 )
                 result.dataValues.fileImage = fileImage
+                logs('success view cupon', req.url, {}, res.statusCode, {})
+                return helper.response(res, 200, 'success view cupon', result)
+            } else {
+                logs('cupon not found', req.url, {}, res.statusCode, {})
+                return helper.response(res, 400, 'cupon not found', {})
             }
-
-            return helper.response(res, 200, 'success view cupon', result)
-        } catch (e) {}
+        } catch (e) {
+            let message = `Bad Request, ${e}`
+            let status = 400
+            if (e.isJoi === true) {
+                message = e.details[0].message
+                status = 422
+            }
+            logs(message, req.url, {}, res.statusCode, {})
+            helper.response(res, status, message, {})
+            return next(new CustomError(message, 500))
+        }
     },
     getAllCupon: async (req, res, next) => {
         try {
@@ -191,6 +212,7 @@ module.exports = {
                 totalPage: totalPage,
             }
 
+            logs('success get all cupon', req.url, {}, res.statusCode, {})
             return helper.response(
                 res,
                 200,
@@ -199,13 +221,13 @@ module.exports = {
                 pagination
             )
         } catch (e) {
-            console.log(e)
             let message = `Bad Request, ${e}`
             let status = 400
             if (e.isJoi === true) {
                 message = e.details[0].message
                 status = 422
             }
+            logs(message, req.url, {}, res.statusCode, {})
             helper.response(res, status, message, {})
             return next(new CustomError(message, status))
         }

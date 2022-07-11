@@ -1,5 +1,10 @@
 const helper = require('../helper/helper')
-const { orders, idSchema } = require('../helper/validation')
+const {
+    orders,
+    idSchema,
+    getAllOrders,
+    updateOrder,
+} = require('../helper/validation')
 const { logs } = require('../helper/loggerMessage')
 const { CustomError } = require('../middleware/errorHandler')
 const { Op } = require('sequelize')
@@ -41,11 +46,11 @@ module.exports = {
             if (saveOrder && detailOrder.length > 0) {
                 let x = await addId(detailOrder, saveOrder.id)
                 await detailOrderModel.bulkCreate(x)
+                logs('success add order', req.url, {}, res.statusCode, {})
             }
 
             return helper.response(res, 200, 'success add order', saveOrder)
         } catch (e) {
-            console.log(e)
             let message = `Bad Request, ${e}`
             let status = 400
             if (e.isJoi === true) {
@@ -83,12 +88,13 @@ module.exports = {
             })
 
             if (result) {
+                logs('success get order', req.url, {}, res.statusCode, {})
                 return helper.response(res, 200, 'success get order', result)
             } else {
+                logs('order not found', req.url, {}, res.statusCode, {})
                 return helper.response(res, 400, 'order not found', {})
             }
         } catch (e) {
-            console.log(e)
             let message = `Bad Request, ${e}`
             let status = 400
             if (e.isJoi === true) {
@@ -106,8 +112,7 @@ module.exports = {
                 req.query
             let { offset, limit } = req.query
 
-            //validateasync
-            //TODO: menambahkan validasi
+            await getAllOrders.validateAsync(req.query)
 
             //filter
             let filterOrder = []
@@ -191,6 +196,8 @@ module.exports = {
                 totalPage: totalPage,
             }
 
+            logs('success get all order', req.url, {}, res.statusCode, {})
+
             return helper.response(
                 res,
                 200,
@@ -199,7 +206,6 @@ module.exports = {
                 pagination
             )
         } catch (e) {
-            console.log(e)
             let message = `Bad Request, ${e}`
             let status = 400
             if (e.isJoi === true) {
@@ -215,20 +221,21 @@ module.exports = {
         try {
             const { id, order_status } = req.body
 
-            //validate
-            //TODO: add validasi
+            await updateOrder.validateAsync(req.body)
+
             const check = await orderModel.findByPk(id)
             if (check) {
                 const result = await orderModel.update(
                     { order_status: order_status },
                     { where: { id: check.id } }
                 )
+                logs('update order success', req.url, {}, res.statusCode, {})
                 return helper.response(res, 200, 'update order success', result)
             } else {
+                logs('order not found', req.url, {}, res.statusCode, {})
                 return helper.response(res, 400, 'order not found', {})
             }
         } catch (e) {
-            console.log(e)
             let message = `Bad Request, ${e}`
             let status = 400
             if (e.isJoi === true) {

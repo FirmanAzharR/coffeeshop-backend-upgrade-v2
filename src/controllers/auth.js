@@ -1,5 +1,9 @@
 const helper = require('../helper/helper')
-const { authSchema } = require('../helper/validation')
+const {
+    authSchema,
+    activationUser,
+    loginValidation,
+} = require('../helper/validation')
 const { logs } = require('../helper/loggerMessage')
 const bcrypt = require('bcrypt')
 const nodemailer = require('nodemailer')
@@ -9,6 +13,7 @@ const qrcode = require('qrcode-terminal')
 const randomstring = require('randomstring')
 const fs = require('fs')
 const jwt = require('jsonwebtoken')
+const { CustomError } = require('../middleware/errorHandler')
 const modelUser = db.user
 const modelProfile = db.profile
 
@@ -456,7 +461,7 @@ const checkEmail2 = (email) => {
 module.exports = {
     //FIXME: validation pasword harus mengandung hurufbesar kecil dan simbol
     //FIXME: add role on login, register, role: admin, user
-    registerUser: async (req, res) => {
+    registerUser: async (req, res, next) => {
         try {
             const { number, email, role, password } = req.body
             await authSchema.validateAsync(req.body)
@@ -512,21 +517,25 @@ module.exports = {
             }
         } catch (e) {
             logs('failed register', req.url, req.body, res.statusCode, {})
-            let message = 'Bad Request'
+            let message = `Bad Request ${e}`
             let status = 400
             if (e.isJoi === true) {
                 message = e.details[0].message
                 status = 422
             }
-            return helper.response(res, status, message, null)
+            helper.response(res, status, message, {})
+            return next(new CustomError(message, 500))
         }
     },
-    activationUser: async (req, res) => {
+    activationUser: async (req, res, next) => {
         try {
             const { id, key } = req.query
+            await activationUser.validateAsync(req.query)
+
             const user = await modelUser.findOne({
                 where: { id: id, key: key, active_status: false },
             })
+
             if (user) {
                 await modelUser.update(
                     { active_status: true },
@@ -539,47 +548,75 @@ module.exports = {
                 return helper.response(res, 400, 'User not found', null)
             }
         } catch (e) {
-            console.log(e)
-            return helper.response(res, 400, 'Bad Request', null)
+            let message = `Bad Request ${e}`
+            let status = 400
+            if (e.isJoi === true) {
+                message = e.details[0].message
+                status = 422
+            }
+            logs(
+                `user activation failed`,
+                req.url,
+                req.body,
+                res.statusCode,
+                {}
+            )
+            helper.response(res, status, message, {})
+            return next(new CustomError(message, 500))
         }
     },
-    loginUser: async (req, res) => {
-        const { email, password } = req.body
-        const user = await db.user.findOne({
-            where: { email: email, active_status: true, deletedAt: null },
-        })
-        if (user) {
-            const checkPass = bcrypt.compareSync(password, user.password)
-            if (checkPass) {
-                const payload = {
-                    id: user.id,
-                    email: user.email,
-                    role: user.role,
-                    status: user.active_status,
+    loginUser: async (req, res, next) => {
+        try {
+            const { email, password } = req.body
+
+            await loginValidation.validateAsync(req.body)
+
+            const user = await db.user.findOne({
+                where: { email: email, active_status: true, deletedAt: null },
+            })
+            if (user) {
+                const checkPass = bcrypt.compareSync(password, user.password)
+                if (checkPass) {
+                    const payload = {
+                        id: user.id,
+                        email: user.email,
+                        role: user.role,
+                        status: user.active_status,
+                    }
+                    token = jwt.sign(payload, 'intansyg', { expiresIn: '12h' })
+                    const result = { ...payload, token }
+                    logs(
+                        `${user.email} success login`,
+                        req.url,
+                        req.body,
+                        res.statusCode,
+                        result
+                    )
+                    return helper.response(res, 200, 'success login', result)
+                } else {
+                    logs(
+                        `${user.email} wrong password`,
+                        req.url,
+                        req.body,
+                        res.statusCode,
+                        {}
+                    )
+                    return helper.response(res, 400, 'wrong password', null)
                 }
-                token = jwt.sign(payload, 'intansyg', { expiresIn: '12h' })
-                const result = { ...payload, token }
-                logs(
-                    `${user.email} success login`,
-                    req.url,
-                    req.body,
-                    res.statusCode,
-                    result
-                )
-                return helper.response(res, 200, 'success login', result)
             } else {
-                logs(
-                    `${user.email} wrong password`,
-                    req.url,
-                    req.body,
-                    res.statusCode,
-                    {}
-                )
-                return helper.response(res, 400, 'wrong password', null)
+                logs(`user not found`, req.url, req.body, res.statusCode, {})
+                return helper.response(res, 400, 'user not found', null)
             }
-        } else {
-            logs(`login user not found`, req.url, req.body, res.statusCode, {})
-            return helper.response(res, 400, 'email not found', null)
+        } catch (e) {
+            let message = `Bad Request ${e}`
+            let status = 400
+            if (e.isJoi === true) {
+                message = e.details[0].message
+                status = 422
+            }
+            logs(message, req.url, req.body, res.statusCode, {})
+            helper.response(res, status, message, {})
+            return next(new CustomError(message, 500))
         }
     },
     logoutUser: async () => {},
