@@ -1,4 +1,5 @@
 const helper = require('../helper/helper')
+const config = require('../config/config')
 const { logs } = require('../helper/loggerMessage')
 const {
     updateProfiles,
@@ -64,7 +65,6 @@ module.exports = {
             logs(msg, req.url, data, res.statusCode, {})
             return helper.response(res, 200, msg, results)
         } catch (e) {
-            console.log(e)
             let message = `Bad Request ${e}`
             let status = 400
             if (e.isJoi === true) {
@@ -117,13 +117,11 @@ module.exports = {
                 } else {
                     imageFile = null
                 }
-
                 result.dataValues.profile.dataValues['imageFile'] = imageFile
+                logs('success view profile', req.url, {}, res.statusCode, {})
             }
-
             return helper.response(res, 200, 'success view profile', result)
         } catch (e) {
-            console.log(e)
             let message = `Bad Request : ${e}`
             let status = 400
             if (e.isJoi === true) {
@@ -155,20 +153,33 @@ module.exports = {
                         password: hashPassword,
                     }
                     await userModel.update(data, { where: { id: id } })
+                    logs(
+                        'success update account',
+                        req.url,
+                        req.body,
+                        res.statusCode,
+                        {}
+                    )
                     return helper.response(res, 200, 'success update account')
                 } else {
+                    logs(
+                        'old password not match',
+                        req.url,
+                        req.body,
+                        res.statusCode,
+                        {}
+                    )
                     return helper.response(res, 400, 'old password not match')
                 }
             }
         } catch (e) {
-            console.log(e)
             let message = `Bad Request : ${e}`
             let status = 400
             if (e.isJoi === true) {
                 message = e.details[0].message
                 status = 422
             }
-            logs(message, req.url, {}, res.statusCode, {})
+            logs(message, req.url, req.body, res.statusCode, {})
             helper.response(res, status, message, {})
             return next(new CustomError(message, 500))
         }
