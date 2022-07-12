@@ -572,7 +572,7 @@ module.exports = {
             await loginValidation.validateAsync(req.body)
 
             const user = await db.user.findOne({
-                where: { email: email, active_status: true, deletedAt: null },
+                where: { email: email, deletedAt: null },
             })
             if (user) {
                 const checkPass = bcrypt.compareSync(password, user.password)
@@ -592,7 +592,16 @@ module.exports = {
                         res.statusCode,
                         result
                     )
-                    return helper.response(res, 200, 'success login', result)
+                    if (user.active_status == true) {
+                        return helper.response(
+                            res,
+                            200,
+                            'success login',
+                            result
+                        )
+                    } else {
+                        return helper.response(res, 400, 'user not active', {})
+                    }
                 } else {
                     logs(
                         `${user.email} wrong password`,

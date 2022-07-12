@@ -14,6 +14,7 @@ const db = require('../models')
 const fs = require('fs')
 const modelCupon = db.cupon
 
+//TODO:kurang cupon list untuk ditampilkan di homepage utama coffeeshop
 module.exports = {
     addCupon: async (req, res, next) => {
         try {

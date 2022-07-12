@@ -1,4 +1,1 @@
-Mengubah semua pagination menjadi get (req.query) bukan post
 membuat error handling di catch ke dalam helper (catch.js)
-membuat membuat middleware isAdmin untuk pembatasan akses api
-menyimpan nama image dan directorinya contoh /profile/namafile.txt supaya directory bisa ditaruh di config (profile,kupon,produk)
