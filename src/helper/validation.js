@@ -79,8 +79,8 @@ const validateId = Joi.object({
 })
 
 const pageCupon = Joi.object({
-    name: Joi.string().allow(''),
-    start_date: Joi.date().allow(null),
+    name: Joi.string(),
+    start_date: Joi.string(),
     limit: Joi.number().required(),
     offset: Joi.number().required(),
 })

@@ -14,11 +14,6 @@ const fs = require('fs')
 const profileModel = db.profile
 const userModel = db.user
 
-const directory = {
-    local: `./src/uploads/profiles/`,
-    server: '',
-}
-
 module.exports = {
     updateProfile: async (req, res, next) => {
         try {
@@ -53,7 +48,7 @@ module.exports = {
                 if (result) {
                     if (raw.image) {
                         fs.writeFileSync(
-                            `${directory.local}${fileName}`,
+                            `${config.directory.local}profiles/${fileName}`,
                             raw.image
                         )
                     }
@@ -109,7 +104,7 @@ module.exports = {
             let imageFile = ''
 
             if (result) {
-                const imageName = `${directory.local}${result.dataValues.profile.dataValues.image}`
+                const imageName = `${config.directory.local}profiles/${result.dataValues.profile.dataValues.image}`
                 if (fs.existsSync(imageName)) {
                     imageFile = fs.readFileSync(imageName, {
                         encoding: 'utf-8',

@@ -36,7 +36,7 @@ module.exports = {
             const result = await modelCupon.create(data)
             if (result) {
                 fs.writeFileSync(
-                    `${config.directory.local}${fileName}`,
+                    `${config.directory.local}cupons/${fileName}`,
                     raw.image
                 )
                 logs('success add cupon', req.url, {}, res.statusCode, {})
@@ -77,7 +77,7 @@ module.exports = {
                 })
                 if (result) {
                     fs.writeFileSync(
-                        `${config.directory.local}${check.image}`,
+                        `${config.directory.local}cupons/${check.image}`,
                         raw.image
                     )
                     logs(
@@ -113,7 +113,7 @@ module.exports = {
             if (check) {
                 const result = await modelCupon.destroy({ where: { id: id } })
                 if (result) {
-                    fs.unlinkSync(`${directory.local}${check.image}`)
+                    fs.unlinkSync(`${directory.local}cupons/${check.image}`)
                 }
                 logs('success delete cupon', req.url, {}, res.statusCode, {})
                 return helper.response(res, 200, 'success delete cupon', result)
@@ -135,14 +135,14 @@ module.exports = {
     },
     viewCupon: async (req, res, next) => {
         try {
-            const { id } = req.body
+            const { id } = req.query
             const result = await modelCupon.findByPk(id)
 
-            await validateId.validateAsync(req.body)
+            await validateId.validateAsync(req.query)
 
             if (result) {
                 const fileImage = fs.readFileSync(
-                    `${config.directory.local}${result.image}`,
+                    `${config.directory.local}cupons/${result.image}`,
                     { encoding: 'utf8', flag: 'r' }
                 )
                 result.dataValues.fileImage = fileImage
@@ -166,10 +166,10 @@ module.exports = {
     },
     getAllCupon: async (req, res, next) => {
         try {
-            const { name, start_date } = req.body
-            let { offset, limit } = req.body
+            const { name, start_date } = req.query
+            let { offset, limit } = req.query
 
-            await pageCupon.validateAsync(req.body)
+            await pageCupon.validateAsync(req.query)
 
             let filter = []
 

@@ -10,7 +10,7 @@ const {
 } = require('../controllers/product')
 
 router.post('/product-add', addProduct)
-router.post('/product-view', viewProduct)
-router.post('/product-get-page', getProduct)
+router.get('/product-view', viewProduct)
+router.get('/product-get-page', getProduct)
 router.patch('/product-update', updateProduct)
 router.delete('/product-delete', deleteProduct)
