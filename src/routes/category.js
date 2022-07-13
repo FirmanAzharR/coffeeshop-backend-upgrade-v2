@@ -1,7 +1,6 @@
 const router = require('express').Router()
-const { isAuth } = require('../middleware/authorization')
-module.exports = router
-
+const { passportAuthz } = require('../middleware/authorization')
 const { getListCategory } = require('../controllers/category')
 
-router.get('/category-list', isAuth, getListCategory)
+router.get('/category-list', passportAuthz, getListCategory)
+module.exports = router

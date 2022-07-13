@@ -1,8 +1,27 @@
 const helper = require('../helper/helper')
 const jwt = require('jsonwebtoken')
 const { logs } = require('../helper/loggerMessage')
+const passport = require('passport')
+const { passportAuth } = require('../config/passport')
+passportAuth(passport)
 
+//FIXME:SESSION COOKIE GUNANYA BUAT APA BELUM PAHAM SAYAAAAAAAA DI APP.JS SAMA DISINI
 module.exports = {
+    passportAuthz: (req, res, next) => {
+        passport.authenticate('jwt', { session: false }, (err, user, info) => {
+            if (err) return next(err)
+            if (!user)
+                return res.status(401).send(
+                    info.name === 'Error'
+                        ? {
+                              name: 'NoAuthorization',
+                              message: 'Please login first',
+                          }
+                        : info
+                )
+            next()
+        })(req, res, next)
+    },
     isAuth: (req, res, next) => {
         let token = req.headers.authorization
 

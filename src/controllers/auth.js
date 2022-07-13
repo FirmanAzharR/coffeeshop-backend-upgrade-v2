@@ -583,7 +583,7 @@ module.exports = {
                         role: user.role,
                         status: user.active_status,
                     }
-                    token = jwt.sign(payload, 'intansyg', { expiresIn: '12h' })
+                    token = jwt.sign(payload, 'intansyg', { expiresIn: '8h' })
                     const result = { ...payload, token }
                     logs(
                         `${user.email} success login`,
