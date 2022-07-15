@@ -1,4 +1,5 @@
 const helper = require('../helper/helper')
+const config = require('../config/config')
 const { logs } = require('../helper/loggerMessage')
 const {
     updateProfiles,
@@ -12,11 +13,6 @@ const db = require('../models')
 const fs = require('fs')
 const profileModel = db.profile
 const userModel = db.user
-
-const directory = {
-    local: `./src/uploads/profiles/`,
-    server: '',
-}
 
 module.exports = {
     updateProfile: async (req, res, next) => {
@@ -52,7 +48,7 @@ module.exports = {
                 if (result) {
                     if (raw.image) {
                         fs.writeFileSync(
-                            `${directory.local}${fileName}`,
+                            `${config.directory.local}profiles/${fileName}`,
                             raw.image
                         )
                     }
@@ -64,7 +60,6 @@ module.exports = {
             logs(msg, req.url, data, res.statusCode, {})
             return helper.response(res, 200, msg, results)
         } catch (e) {
-            console.log(e)
             let message = `Bad Request ${e}`
             let status = 400
             if (e.isJoi === true) {
@@ -109,7 +104,7 @@ module.exports = {
             let imageFile = ''
 
             if (result) {
-                const imageName = `${directory.local}${result.dataValues.profile.dataValues.image}`
+                const imageName = `${config.directory.local}profiles/${result.dataValues.profile.dataValues.image}`
                 if (fs.existsSync(imageName)) {
                     imageFile = fs.readFileSync(imageName, {
                         encoding: 'utf-8',
@@ -117,13 +112,11 @@ module.exports = {
                 } else {
                     imageFile = null
                 }
-
                 result.dataValues.profile.dataValues['imageFile'] = imageFile
+                logs('success view profile', req.url, {}, res.statusCode, {})
             }
-
             return helper.response(res, 200, 'success view profile', result)
         } catch (e) {
-            console.log(e)
             let message = `Bad Request : ${e}`
             let status = 400
             if (e.isJoi === true) {
@@ -155,20 +148,33 @@ module.exports = {
                         password: hashPassword,
                     }
                     await userModel.update(data, { where: { id: id } })
+                    logs(
+                        'success update account',
+                        req.url,
+                        req.body,
+                        res.statusCode,
+                        {}
+                    )
                     return helper.response(res, 200, 'success update account')
                 } else {
+                    logs(
+                        'old password not match',
+                        req.url,
+                        req.body,
+                        res.statusCode,
+                        {}
+                    )
                     return helper.response(res, 400, 'old password not match')
                 }
             }
         } catch (e) {
-            console.log(e)
             let message = `Bad Request : ${e}`
             let status = 400
             if (e.isJoi === true) {
                 message = e.details[0].message
                 status = 422
             }
-            logs(message, req.url, {}, res.statusCode, {})
+            logs(message, req.url, req.body, res.statusCode, {})
             helper.response(res, status, message, {})
             return next(new CustomError(message, 500))
         }

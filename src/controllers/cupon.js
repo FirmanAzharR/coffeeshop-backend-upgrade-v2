@@ -1,4 +1,5 @@
 const helper = require('../helper/helper')
+const config = require('../config/config')
 const {
     cuponAdd,
     cuponUpdate,
@@ -11,14 +12,9 @@ const { Op } = require('sequelize')
 const moment = require('moment')
 const db = require('../models')
 const fs = require('fs')
-const { start } = require('repl')
 const modelCupon = db.cupon
 
-const directory = {
-    local: `./src/uploads/cupons/`,
-    server: '',
-}
-
+//TODO:kurang cupon list untuk ditampilkan di homepage utama coffeeshop
 module.exports = {
     addCupon: async (req, res, next) => {
         try {
@@ -40,11 +36,14 @@ module.exports = {
 
             const result = await modelCupon.create(data)
             if (result) {
-                fs.writeFileSync(`${directory.local}${fileName}`, raw.image)
+                fs.writeFileSync(
+                    `${config.directory.local}cupons/${fileName}`,
+                    raw.image
+                )
+                logs('success add cupon', req.url, {}, res.statusCode, {})
             }
             return helper.response(res, 200, 'success add cupon', result)
         } catch (e) {
-            console.log(e)
             let message = `Bad Request, ${e}`
             let status = 400
             if (e.isJoi === true) {
@@ -79,8 +78,15 @@ module.exports = {
                 })
                 if (result) {
                     fs.writeFileSync(
-                        `${directory.local}${check.image}`,
+                        `${config.directory.local}cupons/${check.image}`,
                         raw.image
+                    )
+                    logs(
+                        'success update cupon',
+                        req.url,
+                        {},
+                        res.statusCode,
+                        {}
                     )
                 }
                 return helper.response(res, 200, 'success update cupon', result)
@@ -88,7 +94,6 @@ module.exports = {
                 return helper.response(res, 400, 'data cupon not found', {})
             }
         } catch (e) {
-            console.log(e)
             let message = `Bad Request, ${e}`
             let status = 400
             if (e.isJoi === true) {
@@ -109,14 +114,15 @@ module.exports = {
             if (check) {
                 const result = await modelCupon.destroy({ where: { id: id } })
                 if (result) {
-                    fs.unlinkSync(`${directory.local}${check.image}`)
+                    fs.unlinkSync(`${directory.local}cupons/${check.image}`)
                 }
+                logs('success delete cupon', req.url, {}, res.statusCode, {})
                 return helper.response(res, 200, 'success delete cupon', result)
             } else {
+                logs('cupon not found', req.url, {}, res.statusCode, {})
                 return helper.response(res, 400, 'data cupon not found', {})
             }
         } catch (e) {
-            console.log(e)
             let message = `Bad Request, ${e}`
             let status = 400
             if (e.isJoi === true) {
@@ -130,25 +136,41 @@ module.exports = {
     },
     viewCupon: async (req, res, next) => {
         try {
-            const { id } = req.body
+            const { id } = req.query
             const result = await modelCupon.findByPk(id)
+
+            await validateId.validateAsync(req.query)
+
             if (result) {
                 const fileImage = fs.readFileSync(
-                    `${directory.local}${result.image}`,
+                    `${config.directory.local}cupons/${result.image}`,
                     { encoding: 'utf8', flag: 'r' }
                 )
                 result.dataValues.fileImage = fileImage
+                logs('success view cupon', req.url, {}, res.statusCode, {})
+                return helper.response(res, 200, 'success view cupon', result)
+            } else {
+                logs('cupon not found', req.url, {}, res.statusCode, {})
+                return helper.response(res, 400, 'cupon not found', {})
             }
-
-            return helper.response(res, 200, 'success view cupon', result)
-        } catch (e) {}
+        } catch (e) {
+            let message = `Bad Request, ${e}`
+            let status = 400
+            if (e.isJoi === true) {
+                message = e.details[0].message
+                status = 422
+            }
+            logs(message, req.url, {}, res.statusCode, {})
+            helper.response(res, status, message, {})
+            return next(new CustomError(message, 500))
+        }
     },
     getAllCupon: async (req, res, next) => {
         try {
-            const { name, start_date } = req.body
-            let { offset, limit } = req.body
+            const { name, start_date } = req.query
+            let { offset, limit } = req.query
 
-            await pageCupon.validateAsync(req.body)
+            await pageCupon.validateAsync(req.query)
 
             let filter = []
 
@@ -191,6 +213,7 @@ module.exports = {
                 totalPage: totalPage,
             }
 
+            logs('success get all cupon', req.url, {}, res.statusCode, {})
             return helper.response(
                 res,
                 200,
@@ -199,13 +222,13 @@ module.exports = {
                 pagination
             )
         } catch (e) {
-            console.log(e)
             let message = `Bad Request, ${e}`
             let status = 400
             if (e.isJoi === true) {
                 message = e.details[0].message
                 status = 422
             }
+            logs(message, req.url, {}, res.statusCode, {})
             helper.response(res, status, message, {})
             return next(new CustomError(message, status))
         }

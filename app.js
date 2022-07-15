@@ -1,14 +1,18 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const cors = require('cors')
+const passport = require('passport')
 const logger = require('./src/helper/logger')
 const db = require('./src/models')
+const cookieSession = require('cookie-session')
 
 require('dotenv').config()
 
 const routesNavigation = require('./src/routesNavigation')
 
 const app = express()
+
+app.use(passport.initialize())
 app.use(bodyParser.json({ limit: '10mb', extended: true }))
 app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }))
 
