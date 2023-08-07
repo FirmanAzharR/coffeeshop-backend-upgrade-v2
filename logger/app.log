@@ -10,3 +10,18 @@
 2022-06-19T06:16:03.911Z - [INFO] - app is running on port 8080
 2022-06-19T06:16:04.209Z - [INFO] - database success connected
 2022-06-19T06:17:37.501Z - [INFO] - message ::admin@gmail.com success login - url:: /user-login - body:: {"email":"admin@gmail.com","password":"admin"} - status:: 200 - response:: {"id":7,"email":"admin@gmail.com","role":1,"status":true,"token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NywiZW1haWwiOiJhZG1pbkBnbWFpbC5jb20iLCJyb2xlIjoxLCJzdGF0dXMiOnRydWUsImlhdCI6MTY1NTYxOTQ1NywiZXhwIjoxNjU1NjYyNjU3fQ.Nrmjx9eUE2eRvP6orA3MxVkChNuADGEV-FOpO8QZRjU"}
+2023-08-07T04:14:58.385Z - [INFO] - app is running on port 8080
+2023-08-07T04:14:58.658Z - [INFO] - database success connected
+2023-08-07T04:14:58.949Z - [INFO] - check and update table when model are updated
+2023-08-07T04:14:58.950Z - [INFO] - proses sync db done
+2023-08-07T04:14:58.950Z - [INFO] - running app successfully
+2023-08-07T04:15:46.354Z - [INFO] - app is running on port 8080
+2023-08-07T04:15:46.583Z - [INFO] - database success connected
+2023-08-07T04:15:46.815Z - [INFO] - check and update table when model are updated
+2023-08-07T04:15:46.816Z - [INFO] - proses sync db done
+2023-08-07T04:15:46.816Z - [INFO] - running app successfully
+2023-08-07T04:16:46.568Z - [INFO] - message ::success register - url:: /user-register - body:: {"number":"081213263728","email":"firmanazharr@gmail.com","role":"2","password":"admin123"} - status:: 200 - response:: {"number":"081213263728","email":"firmanazharr@gmail.com","password":"$2b$10$.vkmZAPw7J/ZOD/g9grtGuVb2fCxQMr85oh7Vv9y9WZ8bsxarT91C","role":"2","key":"qhfSa3r","active_status":false}
+2023-08-07T04:18:04.425Z - [INFO] - message ::success register - url:: /user-activation?id=1&key=qhfSa3r - body:: {} - status:: 200 - response:: {}
+2023-08-07T04:19:23.361Z - [INFO] - message ::firmanazharr@gmail.com success login - url:: /user-login - body:: {"email":"firmanazharr@gmail.com","password":"admin123"} - status:: 200 - response:: {"id":1,"email":"firmanazharr@gmail.com","role":2,"status":true,"token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJmaXJtYW5hemhhcnJAZ21haWwuY29tIiwicm9sZSI6Miwic3RhdHVzIjp0cnVlLCJpYXQiOjE2OTEzODE5NjMsImV4cCI6MTY5MTQxMDc2M30.Op1iQoaahuwon2M-JA3B-s5Y6vKwKs0i-uJAmckNvOc"}
+2023-08-07T04:19:47.595Z - [INFO] - message ::product not found - url:: /product-view?product_id=1 - body:: {} - status:: 200 - response:: {}
+2023-08-07T04:19:51.853Z - [INFO] - message ::success get all product - url:: /product-get-page?product_name=&category_id=1&limit=5&offset=0 - body:: {} - status:: 200 - response:: {}

@@ -8,7 +8,7 @@ const { logs } = require('../helper/loggerMessage')
 const bcrypt = require('bcrypt')
 const nodemailer = require('nodemailer')
 const db = require('../models')
-const { Client } = require('whatsapp-web.js')
+// const { Client } = require('whatsapp-web.js')
 const qrcode = require('qrcode-terminal')
 const randomstring = require('randomstring')
 const fs = require('fs')
@@ -17,71 +17,71 @@ const { CustomError } = require('../middleware/errorHandler')
 const modelUser = db.user
 const modelProfile = db.profile
 
-const sendOtpWa = (number, id, key) => {
-    try {
-        let SESSION = './src/config/session.json'
-        let sessionData
-        if (fs.existsSync(SESSION)) {
-            sessionData = require('../config/session.json')
-        }
+// const sendOtpWa = (number, id, key) => {
+//     try {
+//         let SESSION = './src/config/session.json'
+//         let sessionData
+//         if (fs.existsSync(SESSION)) {
+//             sessionData = require('../config/session.json')
+//         }
 
-        const client = new Client({
-            session: sessionData,
-            puppeteer: {
-                headless: true,
-                args: [
-                    '--no-sandbox',
-                    '--disable-setuid-sandbox',
-                    '--disable-dev-shm-usage',
-                    '--disable-accelerated-2d-canvas',
-                    '--no-first-run',
-                    '--no-zygote',
-                    '--single-process',
-                    '--disable-gpu',
-                ],
-            },
-        })
+//         const client = new Client({
+//             session: sessionData,
+//             puppeteer: {
+//                 headless: true,
+//                 args: [
+//                     '--no-sandbox',
+//                     '--disable-setuid-sandbox',
+//                     '--disable-dev-shm-usage',
+//                     '--disable-accelerated-2d-canvas',
+//                     '--no-first-run',
+//                     '--no-zygote',
+//                     '--single-process',
+//                     '--disable-gpu',
+//                 ],
+//             },
+//         })
 
-        client.on('qr', (qr) => {
-            qrcode.generate(qr, { small: true })
-            console.log('QR RECEIVED', qr)
-        })
+//         client.on('qr', (qr) => {
+//             qrcode.generate(qr, { small: true })
+//             console.log('QR RECEIVED', qr)
+//         })
 
-        client.on('authenticated', (session) => {
-            sessionData = session
-            fs.writeFile(SESSION, JSON.stringify(session), (err) => {
-                if (err) {
-                    console.error(err)
-                }
-            })
-        })
+//         client.on('authenticated', (session) => {
+//             sessionData = session
+//             fs.writeFile(SESSION, JSON.stringify(session), (err) => {
+//                 if (err) {
+//                     console.error(err)
+//                 }
+//             })
+//         })
 
-        client.on('auth_failure', (_session) => {
-            console.log('auth failed')
-        })
+//         client.on('auth_failure', (_session) => {
+//             console.log('auth failed')
+//         })
 
-        client.on('ready', async () => {
-            const message = `https://test-link-activation/id=${id}/key=${key}`
-            //const message = `active your account click this link : https://bit.ly/arkademycv/key`
-            const chatId = `${number}@c.us`
-            await client
-                .sendMessage(chatId, message)
-                .then(() => {
-                    console.log('success send verification to whatsapp-number')
-                })
-                .catch((e) => console.log(e))
-        })
+//         client.on('ready', async () => {
+//             const message = `https://test-link-activation/id=${id}/key=${key}`
+//             //const message = `active your account click this link : https://bit.ly/arkademycv/key`
+//             const chatId = `${number}@c.us`
+//             await client
+//                 .sendMessage(chatId, message)
+//                 .then(() => {
+//                     console.log('success send verification to whatsapp-number')
+//                 })
+//                 .catch((e) => console.log(e))
+//         })
 
-        client.on('disconnected', (x) => {
-            // console.log('client disconnected')
-            client.destroy()
-        })
+//         client.on('disconnected', (x) => {
+//             // console.log('client disconnected')
+//             client.destroy()
+//         })
 
-        client.initialize()
-    } catch (e) {
-        console.log(e)
-    }
-}
+//         client.initialize()
+//     } catch (e) {
+//         console.log(e)
+//     }
+// }
 
 const sendOtpEmail = (response, email, key) => {
     const transporter = nodemailer.createTransport({
