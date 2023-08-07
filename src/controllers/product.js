@@ -188,7 +188,7 @@ module.exports = {
 
                 if (raw.image) {
                     await fsPromises.writeFile(
-                        `${config.directory.local}products/${check.image}`,
+                        `${config.directory.server}products/${check.image}`,
                         raw.image,
                         async (err) => {
                             return next(new CustomError(err, 500))
@@ -235,7 +235,7 @@ module.exports = {
 
             if (product) {
                 const fileImage = fs.readFileSync(
-                    `${config.directory.local}products/${product.image}`,
+                    `${config.directory.server}products/${product.image}`,
                     { encoding: 'utf8', flag: 'r' }
                 )
 
@@ -284,7 +284,7 @@ module.exports = {
             if (check) {
                 // fs.exists vs fs.existsSync = exists is asyncronous not wait exists to execute next line
                 // and existSync is syncronous wait process existSync before executing next line
-                const path = `${config.directory.local}products/${check.image}`
+                const path = `${config.directory.server}products/${check.image}`
 
                 if (fs.existsSync(path)) {
                     fs.unlinkSync(path)
