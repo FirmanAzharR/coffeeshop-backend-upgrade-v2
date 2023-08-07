@@ -47,6 +47,10 @@ app.use((request, response, next) => {
 app.use('/api1', routesNavigation)
 app.use('/api1/fileUploadsApi1', express.static('upload'))
 
+app.get('/', (req, res) => {
+    res.status(200).send({message: "Express API is running"})
+})
+
 // app.use('/', routesNavigation)
 app.get('*', (req, res) => {
     res.status(404).send('Path not found')
@@ -54,6 +58,6 @@ app.get('*', (req, res) => {
 
 const port = process.env.PORT || 8080
 
-app.listen(port, () => {
+app.listen(port,"0.0.0.0", () => {
     logger.info(`app is running on port ${port}`)
 })

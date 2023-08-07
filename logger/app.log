@@ -25,3 +25,9 @@
 2023-08-07T04:19:23.361Z - [INFO] - message ::firmanazharr@gmail.com success login - url:: /user-login - body:: {"email":"firmanazharr@gmail.com","password":"admin123"} - status:: 200 - response:: {"id":1,"email":"firmanazharr@gmail.com","role":2,"status":true,"token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJmaXJtYW5hemhhcnJAZ21haWwuY29tIiwicm9sZSI6Miwic3RhdHVzIjp0cnVlLCJpYXQiOjE2OTEzODE5NjMsImV4cCI6MTY5MTQxMDc2M30.Op1iQoaahuwon2M-JA3B-s5Y6vKwKs0i-uJAmckNvOc"}
 2023-08-07T04:19:47.595Z - [INFO] - message ::product not found - url:: /product-view?product_id=1 - body:: {} - status:: 200 - response:: {}
 2023-08-07T04:19:51.853Z - [INFO] - message ::success get all product - url:: /product-get-page?product_name=&category_id=1&limit=5&offset=0 - body:: {} - status:: 200 - response:: {}
+2023-08-07T04:40:56.541Z - [INFO] - app is running on port 8080
+2023-08-07T04:40:56.793Z - [INFO] - database success connected
+2023-08-07T04:40:57.034Z - [INFO] - check and update table when model are updated
+2023-08-07T04:40:57.034Z - [INFO] - proses sync db done
+2023-08-07T04:40:57.035Z - [INFO] - running app successfully
+2023-08-07T04:41:09.838Z - [INFO] - message ::firmanazharr@gmail.com success login - url:: /user-login - body:: {"email":"firmanazharr@gmail.com","password":"admin123"} - status:: 200 - response:: {"id":1,"email":"firmanazharr@gmail.com","role":2,"status":true,"token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJmaXJtYW5hemhhcnJAZ21haWwuY29tIiwicm9sZSI6Miwic3RhdHVzIjp0cnVlLCJpYXQiOjE2OTEzODMyNjksImV4cCI6MTY5MTQxMjA2OX0.TW-ZYRUBV0XXW-j0xnP6rsqy4hM6h4_4RcKRfOp3YLw"}
