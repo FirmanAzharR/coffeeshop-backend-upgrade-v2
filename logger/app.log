@@ -31,3 +31,16 @@
 2023-08-07T04:40:57.034Z - [INFO] - proses sync db done
 2023-08-07T04:40:57.035Z - [INFO] - running app successfully
 2023-08-07T04:41:09.838Z - [INFO] - message ::firmanazharr@gmail.com success login - url:: /user-login - body:: {"email":"firmanazharr@gmail.com","password":"admin123"} - status:: 200 - response:: {"id":1,"email":"firmanazharr@gmail.com","role":2,"status":true,"token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJmaXJtYW5hemhhcnJAZ21haWwuY29tIiwicm9sZSI6Miwic3RhdHVzIjp0cnVlLCJpYXQiOjE2OTEzODMyNjksImV4cCI6MTY5MTQxMjA2OX0.TW-ZYRUBV0XXW-j0xnP6rsqy4hM6h4_4RcKRfOp3YLw"}
+2023-08-07T06:05:54.003Z - [INFO] - app is running on port 5815
+2023-08-07T06:06:15.100Z - [INFO] - database failed to connect connect ETIMEDOUT 35.197.103.96:5432
+2023-08-07T06:06:15.101Z - [INFO] - failed sync database connect ETIMEDOUT 35.197.103.96:5432
+2023-08-07T06:07:28.767Z - [INFO] - app is running on port 8080
+2023-08-07T06:07:29.038Z - [INFO] - database success connected
+2023-08-07T06:07:29.253Z - [INFO] - check and update table when model are updated
+2023-08-07T06:07:29.254Z - [INFO] - proses sync db done
+2023-08-07T06:07:29.254Z - [INFO] - running app successfully
+2023-08-07T06:18:08.465Z - [INFO] - app is running on port 5815
+2023-08-07T06:18:11.986Z - [INFO] - database success connected
+2023-08-07T06:18:28.397Z - [INFO] - check and update table when model are updated
+2023-08-07T06:18:28.398Z - [INFO] - proses sync db done
+2023-08-07T06:18:28.398Z - [INFO] - running app successfully

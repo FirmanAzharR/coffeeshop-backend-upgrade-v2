@@ -3,7 +3,8 @@ const logger = require('../helper/logger')
 
 //===================== LOCAL CONNECTION ==========================================//
 const dbConfig = require('../config/config')
-const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
+// dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD
+const sequelize = new Sequelize(/*dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD*/dbConfig.DATABASE_URL, {
     host: dbConfig.HOST,
     dialect: dbConfig.dialect,
     logging: false,

@@ -12,6 +12,7 @@ module.exports = {
         acquire: 30000,
         idle: 10000,
     },
+    DATABASE_URL: process.env.DATABASE_URL,
 
     //path
     directory: {
