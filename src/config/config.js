@@ -17,6 +17,6 @@ module.exports = {
     //path
     directory: {
         local: `./src/uploads/cupons/`,
-        server: '',
+        server: 'app/uploads',
     },
 }

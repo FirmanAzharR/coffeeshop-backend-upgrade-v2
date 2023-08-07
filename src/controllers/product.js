@@ -130,7 +130,7 @@ module.exports = {
             if (!check) {
                 //bisa juga pakai fs.writeFileSync
                 await fsPromises.writeFile(
-                    `${config.directory.local}products/${fileName}`,
+                    `${config.directory.server}products/${fileName}`,
                     raw.image,
                     async (err) => {
                         console.log(err)
